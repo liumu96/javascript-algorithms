@@ -1,0 +1,32 @@
+{
+  "name": "javascript-algorithms",
+  "version": "1.0.0",
+  "description": "Algorithms and data-structures implemented on JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liumu96/javascript-algorithms.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liumu96/javascript-algorithms/issues"
+  },
+  "homepage": "https://github.com/liumu96/javascript-algorithms#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
+    "@types/jest": "^24.0.23",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jest": "^23.1.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.17.0",
+    "husky": "^3.1.0",
+    "jest": "^24.9.0"
+  }
+}
