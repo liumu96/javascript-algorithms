@@ -2,186 +2,186 @@ import DoublyLinkedListNode from './DoublyLinkedListNode';
 import Comparator from '../../utils/comparator/Comparator';
 
 export default class DoublyLinkedList {
-    constructor(comparatorFunction) {
-        this.head = null;
-        this.tail = null;
-        this.compare = new Comparator(comparatorFunction);
+  constructor(comparatorFunction) {
+    this.head = null;
+    this.tail = null;
+    this.compare = new Comparator(comparatorFunction);
+  }
+
+  prepend(value) {
+    const newNode = new DoublyLinkedListNode(value, this.head);
+
+    if (this.head) {
+      this.head.previous = newNode;
     }
 
-    prepend(value) {
-        const newNode = new DoublyLinkedListNode(value, this.head);
-        
-        if (this.head) {
-            this.head.previous = newNode;
-        }
+    this.head = newNode;
 
-        this.head = newNode;
-
-        if (!this.tail) {
-            this.tail = newNode;
-        }
-
-        return this;
+    if (!this.tail) {
+      this.tail = newNode;
     }
 
-    append(value) {
-        const newNode = new DoublyLinkedListNode(value);
+    return this;
+  }
 
-        if (!this.head) {
-            this.head = newNode;
-            this.tail = newNo;
-            
-            return this;
-        }
+  append(value) {
+    const newNode = new DoublyLinkedListNode(value);
 
-        this.tail.next = newNode;
-        newNode.previous = this.tail;
+    if (!this.head) {
+      this.head = newNode;
+      this.tail = newNode;
 
-        this.tail = newNode;
-
-        return this;
+      return this;
     }
 
-    delete(value) {
-        if (!this.head) {
-            return null;
-        }
+    this.tail.next = newNode;
+    newNode.previous = this.tail;
 
-        let deleteNode = null;
-        let currentNode = this.head;
+    this.tail = newNode;
 
-        while (currentNode) {
-            if (this.compare.equal(currentNode.value, value)) {
-                deleteNode = currentNode;
+    return this;
+  }
 
-                if (deleteNode === this.head) {
-                    this.head = deleteNode.next;
-
-                    if (this.head) {
-                        this.head.previous = null;
-                    }
-
-                    if (deleteNode === this.tail) {
-                        this.tail = null;
-                    }
-                } else if (deleteNode === this.tail) {
-                    this.tail = deleteNode.previous;
-                    this.tail.next = null;
-                } else {
-                    const previousNode = deleteNode.previous;
-                    const nextNode = deleteNode.next;
-
-                    previousNode.next = nextNode;
-                    nextNode.previous = previousNode;
-                }
-            }
-            currentNode = currentNode.next;
-        }
-
-        return deleteNode;
+  delete(value) {
+    if (!this.head) {
+      return null;
     }
 
-    find({ value = undefined, callback = undefined}) {
-        if (!this.head) {
-            return null;
-        }
+    let deleteNode = null;
+    let currentNode = this.head;
 
-        let currentNode = this.head;
+    while (currentNode) {
+      if (this.compare.equal(currentNode.value, value)) {
+        deleteNode = currentNode;
 
-        while (currentNode) {
-            if (callback && callback(currentNode.value)) {
-                return currentNode;
-            }
+        if (deleteNode === this.head) {
+          this.head = deleteNode.next;
 
-            if (value !== undefined && this.compare.equal(currentNode.value, value)) {
-                return currentNode;
-            }
-            
-            currentNode = currentNode.next;
-        }
-        
-        return null;
-    }
-
-    deleteTail() {
-        if (!this.tail) {
-            return null;
-        }
-
-        if (this.head === this.tail) {
-            const deletedTail = this.tail;
-            this.head = null;
-            this.tail = null;
-
-            return deletedTail;
-        }
-
-        const deletedTail = this.tail;
-
-        this.tail = this.tail.previous;
-        this.tail.next = null;
-
-        return deletedTail;
-    }
-
-    deleteHead() {
-        if (!this.head) {
-            return null;
-        }
-
-        const deleteHead = this.head;
-
-        if (this.head.next) {
-            this.head = this.head.next;
+          if (this.head) {
             this.head.previous = null;
-        } else {
-            this.head = null;
+          }
+
+          if (deleteNode === this.tail) {
             this.tail = null;
+          }
+        } else if (deleteNode === this.tail) {
+          this.tail = deleteNode.previous;
+          this.tail.next = null;
+        } else {
+          const previousNode = deleteNode.previous;
+          const nextNode = deleteNode.next;
+
+          previousNode.next = nextNode;
+          nextNode.previous = previousNode;
         }
-        return deleteHead;
+      }
+      currentNode = currentNode.next;
     }
 
-    toArray() {
-        const nodes = [];
+    return deleteNode;
+  }
 
-        let currentNode = this.head;
-        while (currentNode) {
-            nodes.push(currentNode);
-            currentNode = currentNode.next; 
-        }
-
-        return nodes;
+  find({ value = undefined, callback = undefined }) {
+    if (!this.head) {
+      return null;
     }
 
-    fromArray(values) {
-        values.forEach(value => this.append(value));
+    let currentNode = this.head;
 
-        return this;
+    while (currentNode) {
+      if (callback && callback(currentNode.value)) {
+        return currentNode;
+      }
+
+      if (value !== undefined && this.compare.equal(currentNode.value, value)) {
+        return currentNode;
+      }
+
+      currentNode = currentNode.next;
     }
-    
-    toString(callback) {
-        return this.toArray().map(node => node.toString(callback)).toString();
+
+    return null;
+  }
+
+  deleteTail() {
+    if (!this.tail) {
+      return null;
     }
 
-    reverse() {
-        let currNode = this.head;
-        let prevNode = null;
-        let nextNode = null;
+    if (this.head === this.tail) {
+      const deletedTail = this.tail;
+      this.head = null;
+      this.tail = null;
 
-        while (currNode) {
-            nextNode = currNode.next;
-            prevNode = currNode.previous;
-
-            currNode.next = prevNode;
-            currNode.previous = nextNode;
-
-            prevNode = currNode;
-            currNode = nextNode;
-        }
-
-        this.tail = this.head;
-        this.head = prevNode;
-
-        return this;
+      return deletedTail;
     }
+
+    const deletedTail = this.tail;
+
+    this.tail = this.tail.previous;
+    this.tail.next = null;
+
+    return deletedTail;
+  }
+
+  deleteHead() {
+    if (!this.head) {
+      return null;
+    }
+
+    const deleteHead = this.head;
+
+    if (this.head.next) {
+      this.head = this.head.next;
+      this.head.previous = null;
+    } else {
+      this.head = null;
+      this.tail = null;
+    }
+    return deleteHead;
+  }
+
+  toArray() {
+    const nodes = [];
+
+    let currentNode = this.head;
+    while (currentNode) {
+      nodes.push(currentNode);
+      currentNode = currentNode.next;
+    }
+
+    return nodes;
+  }
+
+  fromArray(values) {
+    values.forEach((value) => this.append(value));
+
+    return this;
+  }
+
+  toString(callback) {
+    return this.toArray().map((node) => node.toString(callback)).toString();
+  }
+
+  reverse() {
+    let currNode = this.head;
+    let prevNode = null;
+    let nextNode = null;
+
+    while (currNode) {
+      nextNode = currNode.next;
+      prevNode = currNode.previous;
+
+      currNode.next = prevNode;
+      currNode.previous = nextNode;
+
+      prevNode = currNode;
+      currNode = nextNode;
+    }
+
+    this.tail = this.head;
+    this.head = prevNode;
+
+    return this;
+  }
 }
